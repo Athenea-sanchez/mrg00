@@ -1,0 +1,114 @@
+# Índice general de repositorios
+
+> Organización y documentación de los repositorios de robótica ubicados en `/home/arrgusr/repositorios`.
+
+Este documento resume los **5 repositorios**, los agrupa por proyecto, resume su estado y mejores prácticas, y enlaza a la documentación detallada de cada uno.
+
+> **Control de versiones (fecha de esta documentación):** al día de hoy, **28 de agosto de 2026**, los 5 repositorios están bajo **git** en su rama `main`, sincronizados con su remoto `origin` y con el área de trabajo limpia. Últimos commits: `Material_base_clases` → `9ee0ce0` (27-08-2025), `Papime_PE110923_rmovil` → `f505ba4` (11-06-2025), `Papime_PE110923_rserial` → `3395eab` (11-06-2025), `Repositorio_PE107220` → `ee6ac19` (14-04-2022) y `Robotica_movil_PE107220` → `7814432` (04-04-2022). Estas fichas viven en la carpeta `repositorios/documentacion/`, que **no forma parte** de ninguno de los repositorios.
+
+## Tabla de contenido
+- [1. Resumen general](#1-resumen-general)
+- [2. Proyectos y relaciones](#2-proyectos-y-relaciones)
+- [3. Tabla comparativa](#3-tabla-comparativa)
+- [4. Enlaces a documentación por repositorio](#4-enlaces-a-documentación-por-repositorio)
+- [5. Problemas transversales](#5-problemas-transversales)
+- [6. Buenas prácticas recomendadas](#6-buenas-prácticas-recomendadas)
+- [7. Diagramas sugeridos](#7-diagramas-sugeridos)
+
+---
+
+## 1. Resumen general
+
+Los repositorios pertenecen a dos familias de proyectos de la **Facultad de Ingeniería de la UNAM** y comparten el objetivo de generar **material didáctico de robótica**. Se dividen así:
+
+| # | Repositorio | Proyecto | Enfoque | Stack |
+|---|---|---|---|---|
+| 1 | `Material_base_clases` | PAPIME PE110923 | Material base de clase | ROS 2 + Gazebo + C++/Python |
+| 2 | `Papime_PE110923_rmovil` | PAPIME PE110923 | Robótica móvil | ROS 2 + Gazebo (diferencial/omni/dofbot) |
+| 3 | `Papime_PE110923_rserial` | PAPIME PE110923 | Robótica serial | ROS 2 + Gazebo (SCARA/Scorbot/dofbot) |
+| 4 | `Repositorio_PE107220` | PAPIME PE107220 | Bancos de prueba | MATLAB/Simulink + Dynamixel + CAD |
+| 5 | `Robotica_movil_PE107220` | PAPIME PE107220 | Prácticas de robótica móvil | MATLAB/Simulink + Arduino/ESP8266 |
+
+## 2. Proyectos y relaciones
+
+### PAPIME PE110923 — Laboratorio de Robótica Remota
+Proyecto *"Desarrollo de un laboratorio de robótica remoto..."* integrado por **tres repos**:
+- **`Papime_PE110923_rmovil`** — robots móviles (diferencial, omnidireccional, dofbot, omni-dofbot).
+- **`Papime_PE110923_rserial`** — manipuladores seriales (SCARA, Scorbot, dofbot, omni).
+- **`Material_base_clases`** — material docente compartido (los mismos conceptos y robots).
+
+Estos tres comparten **nomenclatura, estructura de paquetes ROS 2, estilos de launch y los mismos archivos duplicados**, por lo que las mejoras se pueden aplicar de forma unificada.
+
+### PAPIME PE107220 — Material didáctico con bancos de prueba
+- **`Repositorio_PE107220`** — bancos de prueba (serial, paralelo/Delta, móvil) con MATLAB/Simulink y Dynamixel.
+- **`Robotica_movil_PE107220`** — prácticas del curso de robótica móvil (visión, WiFi, PID, diferencial, AFF, AprilTag).
+
+> Los repos 4 y 5 son la familia **MRG-MX** y usan otra infraestructura (MATLAB/Arduino) que la familia ROS 2 (repos 1–3). Cuidado: no confundir `Papime_PE110923_rmovil` (simulación ROS) con `Robotica_movil_PE107220` (prácticas MATLAB reales).
+
+## 3. Tabla comparativa
+
+| Criterio | Material_base_clases | Papime_..._rmovil | Papime_..._rserial | Repositorio_PE107220 | Robotica_movil_PE107220 |
+|---|---|---|---|---|---|
+| Proyecto | PE110923 | PE110923 | PE110923 | PE107220 | PE107220 |
+| Tipo | Material de clase | Simulación móvil | Simulación serial | Bancos de prueba | Prácticas de curso |
+| Tecnología | ROS 2, C++, Python | ROS 2, Python, C++ | ROS 2, Python, C++ | MATLAB, CAD, Dynamixel | MATLAB, Arduino |
+| Robots | diff, omni, SCARA, Scorbot | diff, omni, dofbot, omni-dofbot | SCARA, Scorbot, dofbot, omni | serial, Delta, móvil | RM20 (móvil) |
+| Documentación base | README de 2 líneas | README + LICENSE + subdocs | README + LICENSE + subdocs | README + PDF + DOCX | README + 6 PDFs |
+| `.gitignore` | ❌ Falta | ❌ Falta | ❌ Falta | ❌ Falta (crítico) | ❌ Falta |
+| `LICENSE` raíz | ❌ Falta | ✅ MIT | ✅ MIT | ❌ Falta | ❌ Falta |
+| Estado | En desarrollo (2025) | En desarrollo | En desarrollo | Archivo (2022) | Archivo (2022) |
+
+## 4. Enlaces a documentación por repositorio
+
+- [Material_base_clases](Material_base_clases.md)
+- [Papime_PE110923_rmovil](Papime_PE110923_rmovil.md)
+- [Papime_PE110923_rserial](Papime_PE110923_rserial.md)
+- [Repositorio_PE107220](Repositorio_PE107220.md)
+- [Robotica_movil_PE107220](Robotica_movil_PE107220.md)
+
+---
+
+## 5. Problemas transversales
+
+Los siguientes problemas se repiten en varios repos y conviene atacarlos de forma global:
+
+1. **Ausencia de `.gitignore`** (los 5). Consecuencias:
+   - Repos 1–3: `__pycache__/`, artefactos de build covariados.
+   - Repo 4: **~134/215 archivos son cachés generadas** (`slprj/`, `.slxc`, `.slx.autosave`) — el peor caso.
+2. **Licencias incompletas**: repos 1, 4 y 5 sin `LICENSE`; los repos 2 y 3 tienen MIT raíz pero `package.xml` con `TODO: License declaration`.
+3. **READMEs insuficientes**: falta quick-start (`colcon build`, requisitos, cómo ejecutar) y tablas de contenido.
+4. **Rutas absolutas hardcodeadas** (`/home/robousr/...`, `D:\Repositorios\...`): rompen la portabilidad.
+5. **Nomenclatura inconsistente** y con typos (`Dynamnixel`, `template_pytnon_node.py`, `trayectory`, `ensible` emergen repetidamente).
+6. **Archivos placeholder/basura** (`borrame.md`, `delate.md`, `Readme.md` vacíos, `jupyter_docs,md` con coma).
+7. **Código duplicado** (mismos worlds, xacros, parsers, scripts) en múltiples paquetes → consolidar/reutilizar.
+8. **Documentación desincronizada con el código** (nombres de archivos que cambiaron, notebooks/imágenes ausentes).
+
+## 6. Buenas prácticas recomendadas
+
+Para mantener una buena salud de los repositorios:
+
+- **`.gitignore` estándar** por stack:
+  - ROS 2: `build/`, `install/`, `log/`, `__pycache__/`, `*.pyc`, `.ipynb_checkpoints/`.
+  - MATLAB: `slprj/`, `_jitprj/`, `_sfprj/`, `*.slxc`, `*.slx.autosave`, `*.mat` de caché, `sl_proj.tmw`.
+- **Licencia clara** a nivel raíz + metadatos coherentes en cada `package.xml`.
+- **README raíz funcional** con: descripción, requisitos, pasos de build/ejecución y enlace a subdocumentación.
+- **Mantenerse DRY (no duplicar)**: compartir mundos, xacros y parsers en lugar de copiarlos entre paquetes.
+- **Rutas relativas / `$(find ...)`** en lugar de rutas absolutas de una máquina concreta.
+- **Nombres consistentes**: un solo idioma de identificadores, sin typos, sin espacios ni acentos en rutas críticas.
+- **Eliminar placeholders** (`borrame.md`, vacíos) y archivos generados del control de versiones.
+- **Sincronizar docs con código** al renombrar o mover archivos.
+- Añadir **CI básico** (lint/build) donde sea viable y **CHANGELOG/CONTRIBUTING** para crecimiento colaborativo.
+
+## 7. Diagramas sugeridos
+
+Los diagramas que se proponen en cada ficha (descritos en texto) son:
+
+1. **Flujo de build/ejecución del workspace ROS 2** (repos 1–3): de `colcon build` a la simulación en Gazebo + RViz.
+2. **Grafo de nodos/tópicos** para robot diferencial (repos 1–2).
+3. **Flujo de control de trayectoria** (repo 3): launch → controlador → tópico `JointTrajectory` → Gazebo → visualización.
+4. **Algoritmo de cinemática inversa del Scorbot** (repo 3).
+5. **Cadena CAD → simulación → control Dynamixel** (repo 4).
+6. **Flujo de limpieza git** para sanear artefactos generados (repo 4).
+7. **Bucle de control PID** y **flujo Visión → Simulink → Robot** (repo 5).
+
+Estos diagramas (gráficos de proceso/de bloques) servirían como material visual adicional para estudiantes y mantenedores.
